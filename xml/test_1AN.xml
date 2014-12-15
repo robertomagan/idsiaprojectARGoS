@@ -1,0 +1,248 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="0" />
+    <experiment length="1000"
+                ticks_per_second="10"
+                random_seed="0" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+  
+  <footbot_un_controller id="unc"
+                                  library="build/lib/libfootbot_un.so">
+      <actuators>
+	<wifi implementation="extern" />
+        <footbot_wheels implementation="default" />
+        <footbot_leds   implementation="default" />
+      </actuators>
+      <sensors>
+		<wifi implementation="extern" />
+        <footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+        <footbot_encoder implementation="default"/>
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="10" interval="10" generators="0.4">
+      
+      				<optimalSpeed>0.2</optimalSpeed>
+					<safetyMargin>0.1</safetyMargin>
+					<socialMargin>0.1</socialMargin>
+					<resolution>201</resolution>
+					<horizon>5</horizon>
+					<timeHorizon>5.0</timeHorizon>
+					<aperture>3.2</aperture>
+					<tau>0.125</tau>
+					<eta>0.5</eta>
+					<local_navigation type="HL" NH="true"/>
+					<rotationTau>0.5</rotationTau>
+					<experiment name="Demo" duration="3000000" log="false"/>
+					<mySensors>
+						<!--><footbot_front_camera implementation="default" low_level_config="/home/root/jerome/camera_config.xml" show_rays="false"/><-->
+					</mySensors>
+				<debug>
+						<camera active="false"/>
+						<console active="false"/>
+						<mode active="false"/>
+						<udp active="false" address="10.0.0.2"/>
+				</debug>
+				<path order='asc' dist='0.05'></path>
+					<footbots>footbot03,footbot05,footbot12,footbot13,footbot14,footbot15,footbot27,footbot28,footbot30,footbot32,footbot51,footbot53,footbot54,footbot55,footbot57,footbot58,footbot60,footbot61,footbot62,footbot63,footbot65,footbot66</footbots>
+				<active_sensors gyroscope="false" rab="false" proximity="false" ground="false" distance_scanner="false"/>
+				<mobility rotation_max_speed='0.1' continuous='false'/>
+				<led_debugging leds="true" beacon="true" beacon_intensity="10"/>
+				<rab min_particle_separation="0.4" particle_age="5.0" min_particle_confidence="0.1"/>
+      </parameters>
+    </footbot_un_controller>
+    
+    <footbot_an_controller id="anc"
+                                  library="build/lib/libfootbot_an.so">
+      <actuators>
+	<wifi implementation="extern" />
+        <footbot_wheels implementation="default" />
+        <footbot_leds   implementation="default" />
+      </actuators>
+      <sensors>
+		<wifi implementation="extern" />
+		<footbot_encoder implementation="default"/>
+        <footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="10" interval="10" generators="0.4">
+      
+      				<optimalSpeed>0.2</optimalSpeed>
+					<safetyMargin>0.1</safetyMargin>
+					<socialMargin>0.1</socialMargin>
+					<resolution>201</resolution>
+					<horizon>5</horizon>
+					<timeHorizon>5.0</timeHorizon>
+					<aperture>3.2</aperture>
+					<tau>0.125</tau>
+					<eta>0.5</eta>
+					<local_navigation type="HL" NH="true"/>
+					<rotationTau>0.5</rotationTau>
+					<experiment name="Demo" duration="3000000" log="false"/>
+					<mySensors>
+						<!--><footbot_front_camera implementation="default" low_level_config="/home/root/jerome/camera_config.xml" show_rays="false"/><-->
+					</mySensors>
+				<debug>
+						<camera active="false"/>
+						<console active="false"/>
+						<mode active="false"/>
+						<udp active="false" address="10.0.0.2"/>
+				</debug>
+				<path order='asc' dist='0.05'></path>
+					<footbots>footbot03,footbot05,footbot12,footbot13,footbot14,footbot15,footbot27,footbot28,footbot30,footbot32,footbot51,footbot53,footbot54,footbot55,footbot57,footbot58,footbot60,footbot61,footbot62,footbot63,footbot65,footbot66</footbots>
+				<active_sensors gyroscope="false" rab="false" proximity="false" ground="false" distance_scanner="false"/>
+				<mobility rotation_max_speed='0.1' continuous='false'/>
+				<led_debugging leds="true" beacon="true" beacon_intensity="10"/>
+				<rab min_particle_separation="0.4" particle_age="5.0" min_particle_confidence="0.1"/>
+      </parameters>
+    </footbot_an_controller>
+  
+  	<footbot_central_controller id="fcentral"
+                                  library="build/lib/libfootbot_central.so">
+      <actuators>
+      <wifi implementation="extern" />	
+        <footbot_wheels implementation="default" />
+        <footbot_leds   implementation="default" />
+      </actuators>
+      <sensors>
+      <wifi implementation="extern" />
+        <footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="0"/>
+    </footbot_central_controller>
+
+    
+    
+    
+
+  </controllers>
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="10, 10, 1">
+
+    <box id="wall_north"
+         position="2.5,5,0"
+         orientation="0,0,0"
+         size="5,0.1,0.5"
+         movable="false" />
+    <box id="wall_south"
+         position="2.5,0,0"
+         orientation="0,0,0"
+         size="5,0.1,0.5"
+         movable="false" />
+    <box id="wall_east"
+         position="5,2.5,0"
+         orientation="0,0,0"
+         size="0.1,5,0.5"
+         movable="false" />
+    <box id="wall_west"
+         position="0,2.5,0"
+         orientation="0,0,0"
+         size="0.1,5,0.5"
+         movable="false" />
+
+<!--    <box id="wall_north"
+         position="25,50,0"
+         orientation="0,0,0"
+         size="50,0.1,0.5"
+         movable="false" />
+    <box id="wall_south"
+         position="25,0,0"
+         orientation="0,0,0"
+         size="50,0.1,0.5"
+         movable="false" />
+    <box id="wall_east"
+         position="50,25,0"
+         orientation="0,0,0"
+         size="0.1,50,0.5"
+         movable="false" />
+    <box id="wall_west"
+         position="0,25,0"
+         orientation="0,0,0"
+         size="0.1,50,0.5"
+         movable="false" /> -->
+
+    <!--
+        You can distribute entities randomly. Here, we distribute
+        the entities in this way:
+        - the position is uniformly distributed
+        on the ground, in the square whose corners are (-1,-1) and (1,1)
+        - the orientations are non-zero only when rotating around Z and chosen
+        from a gaussian distribution, whose mean is zero degrees and
+        standard deviation is 360 degrees.
+    -->
+    
+    <foot-bot id="fc_5"
+              position="4.9999,4.9999,0"
+              orientation="0,0,0"
+              controller="fcentral" />
+              
+    <foot-bot id="an_0"
+              position="4,4,0"
+              orientation="0,0,0"
+              controller="anc" />
+              
+    <foot-bot id="un_1"
+              position="2.5,2.5,0"
+              orientation="0,0,0"
+              controller="unc" />
+    
+            
+              
+        
+         
+     
+
+   <wifi-medium id="wm" />
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ************************************ -->
+  <!-- * Arena -> Physics Engines mapping * -->
+  <!-- ************************************ -->
+  <arena_physics>
+    <engine id="dyn2d">
+      <!--
+          You can use a regular expression to bind a set of entities.
+          See 'man 3 regex' to know more about regular expressions.
+      -->
+      <entity id="fc_5" />      
+      <entity id="an_0" />
+      <entity id="un_1" />
+      <entity id="wall_north" />
+      <entity id="wall_south" />
+      <entity id="wall_east" />
+      <entity id="wall_west" />
+    </engine>
+  </arena_physics>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+    <qtopengl_render splash="false">
+	<camera>
+		<placement idx="0" position="3,3,2" look_at="2.5,2.5,0" />
+		<placement idx="1" position="5,0,1" look_at="5,0,0" />
+		<placement idx="2" position="0,5,1" look_at="0,5,0" />
+		<placement idx="3" position="5,5,1" look_at="5,5,0" />
+	</camera>
+    </qtopengl_render>  
+  </visualization>
+
+</argos-configuration>

@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="0" />
+    <experiment length="1000"
+                ticks_per_second="10"
+                random_seed="0" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+  
+  <footbot_un_controller id="unc"
+                                  library="build/lib/libfootbot_un.so">
+      <actuators>
+	<wifi implementation="extern" />
+        <footbot_wheels implementation="default" />
+        <footbot_leds   implementation="default" />
+      </actuators>
+      <sensors>
+	<wifi implementation="extern" />
+        <footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="10" interval="10" generators="0.4" />
+    </footbot_un_controller>
+    
+    <footbot_an_controller id="anc"
+                                  library="build/lib/libfootbot_an.so">
+      <actuators>
+	<wifi implementation="extern" />
+        <footbot_wheels implementation="default" />
+        <footbot_leds   implementation="default" />
+      </actuators>
+      <sensors>
+	<wifi implementation="extern" />
+        <footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="10" interval="10" generators="0.4" />
+    </footbot_an_controller>
+  
+  	<footbot_central_controller id="fcentral"
+                                  library="build/lib/libfootbot_central.so">
+      <actuators>
+      <wifi implementation="extern" />	
+        <footbot_wheels implementation="default" />
+        <footbot_leds   implementation="default" />
+      </actuators>
+      <sensors>
+      <wifi implementation="extern" />
+        <footbot_proximity implementation="rot_z_only" show_rays="false" calibrate="true" />
+      </sensors>
+      <parameters alpha="7.5" delta="0.001" velocity="0"/>
+    </footbot_central_controller>
+
+    
+    
+    
+
+  </controllers>
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="10, 10, 1">
+
+    <box id="wall_north"
+         position="2.5,5,0"
+         orientation="0,0,0"
+         size="5,0.1,0.5"
+         movable="false" />
+    <box id="wall_south"
+         position="2.5,0,0"
+         orientation="0,0,0"
+         size="5,0.1,0.5"
+         movable="false" />
+    <box id="wall_east"
+         position="5,2.5,0"
+         orientation="0,0,0"
+         size="0.1,5,0.5"
+         movable="false" />
+    <box id="wall_west"
+         position="0,2.5,0"
+         orientation="0,0,0"
+         size="0.1,5,0.5"
+         movable="false" />
+
+<!--    <box id="wall_north"
+         position="25,50,0"
+         orientation="0,0,0"
+         size="50,0.1,0.5"
+         movable="false" />
+    <box id="wall_south"
+         position="25,0,0"
+         orientation="0,0,0"
+         size="50,0.1,0.5"
+         movable="false" />
+    <box id="wall_east"
+         position="50,25,0"
+         orientation="0,0,0"
+         size="0.1,50,0.5"
+         movable="false" />
+    <box id="wall_west"
+         position="0,25,0"
+         orientation="0,0,0"
+         size="0.1,50,0.5"
+         movable="false" /> -->
+
+    <!--
+        You can distribute entities randomly. Here, we distribute
+        the entities in this way:
+        - the position is uniformly distributed
+        on the ground, in the square whose corners are (-1,-1) and (1,1)
+        - the orientations are non-zero only when rotating around Z and chosen
+        from a gaussian distribution, whose mean is zero degrees and
+        standard deviation is 360 degrees.
+    -->
+    
+    <foot-bot id="fc_5"
+              position="4.9999,4.9999,0"
+              orientation="0,0,0"
+              controller="fcentral" />
+              
+    <foot-bot id="an_0"
+              position="2.5,2.5,0"
+              orientation="0,0,0"
+              controller="anc" />
+              
+    <foot-bot id="an_1"
+              position="1.5,3.5,0"
+              orientation="0,0,0"
+              controller="anc" />
+              
+   <foot-bot id="an_2"
+              position="3,4,0"
+              orientation="0,0,0"
+              controller="anc" />
+              
+    <foot-bot id="an_3"
+              position="4,3,0"
+              orientation="0,0,0"
+              controller="anc" />
+              
+        
+            
+    <distribute>
+      <position method="uniform" min="0,0,0" max="4.9,4.9,0"/>
+      <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+      <entity quantity="2" max_trials="100" base_num="6">
+        <foot-bot id="un"
+                  controller="unc" />
+      </entity>      
+    </distribute>  
+     
+
+   <wifi-medium id="wm" />
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ************************************ -->
+  <!-- * Arena -> Physics Engines mapping * -->
+  <!-- ************************************ -->
+  <arena_physics>
+    <engine id="dyn2d">
+      <!--
+          You can use a regular expression to bind a set of entities.
+          See 'man 3 regex' to know more about regular expressions.
+      -->
+      <entity id="fc_5" />      
+      <entity id="un_[[:digit:]]*" />
+      <entity id="an_0" />
+      <entity id="an_1" />
+      <entity id="an_2" />
+      <entity id="an_3" />
+      <entity id="wall_north" />
+      <entity id="wall_south" />
+      <entity id="wall_east" />
+      <entity id="wall_west" />
+    </engine>
+  </arena_physics>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+    <qtopengl_render splash="false">
+	<camera>
+		<placement idx="0" position="0.5,0.5,2" look_at="2.5,2.5,0" />
+		<placement idx="1" position="5,0,1" look_at="5,0,0" />
+		<placement idx="2" position="0,5,1" look_at="0,5,0" />
+		<placement idx="3" position="5,5,1" look_at="5,5,0" />
+	</camera>
+    </qtopengl_render>  
+  </visualization>
+
+</argos-configuration>
